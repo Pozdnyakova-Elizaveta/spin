@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="24dp">
+
+    <!-- Название положения -->
+    <TextView
+        android:id="@+id/tvPositionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сидя"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp" />
+
+    <!-- Рисунок -->
+    <ImageView
+        android:id="@+id/ivPositionImage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_sitting"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvPositionName"
+        android:layout_marginTop="32dp"
+        android:contentDescription="Position" />
+
+    <!-- Сложность -->
+    <TextView
+        android:id="@+id/tvResistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Сопротивление: 5"
+        android:textSize="18sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/ivPositionImage"
+        android:layout_marginTop="24dp" />
+
+    <!-- Таймер -->
+    <TextView
+        android:id="@+id/tvTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:30"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tvResistance"
+        android:layout_marginTop="24dp" />
+
+    <!-- Кнопка пропуска -->
+    <Button
+        android:id="@+id/btnSkip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Пропустить"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="32dp"
+        style="@style/Widget.AppCompat.Button.Borderless" />
+
+</RelativeLayout>
