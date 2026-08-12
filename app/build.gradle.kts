@@ -44,5 +44,6 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:2.5.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.1")
     implementation("androidx.lifecycle:lifecycle-livedata:2.6.1")
+    compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.46")
 }
