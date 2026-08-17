@@ -1,5 +1,6 @@
 package com.example.spin.entities;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import lombok.AllArgsConstructor;
@@ -14,15 +15,27 @@ import lombok.Setter;
 public class History {
     //Идентификатор
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    private int id;
     //Идентификатор проведенной тернировки
-    public int workoutId;
+    private int workoutId;
+    //Название тренировки
+    private String workoutName;
     //Дата проведение
-    public long date;
+    private long date;
     //Число завершенных упражнений
-    public int completedExercises;
+    private int completedExercises;
+    //Всего упражнений
+    private int totalExercises;
     //Пройденный путь за тренировку (в м)
-    public long lengthTraveledPath;
+    private long lengthTraveledPath;
+
+    public String getWorkoutName() {
+        return workoutName;
+    }
+
+    public int getTotalExercises() {
+        return totalExercises;
+    }
 
     public int getId() {
         return id;
@@ -43,10 +56,16 @@ public class History {
         return lengthTraveledPath;
     }
 
-    public History(int workoutId, long date, int totalExercises, int completedExercises, long lengthTraveledPath) {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public History(int workoutId, String workoutName, long date, int completedExercises, int totalExercises, long lengthTraveledPath) {
         this.workoutId = workoutId;
+        this.workoutName = workoutName;
         this.date = date;
         this.completedExercises = completedExercises;
+        this.totalExercises = totalExercises;
         this.lengthTraveledPath = lengthTraveledPath;
     }
 }

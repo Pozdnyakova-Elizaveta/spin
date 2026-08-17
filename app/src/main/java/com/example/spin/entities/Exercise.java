@@ -1,6 +1,7 @@
 package com.example.spin.entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import lombok.AllArgsConstructor;
@@ -10,7 +11,13 @@ import lombok.Setter;
 /**
  * Сущность упражнение
  */
-@Entity(tableName = "exercise")
+@Entity(tableName = "exercise",
+        foreignKeys = @ForeignKey(
+                entity = Workout.class, // Родительская таблица
+                parentColumns = "id",   // Первичный ключ в Workout
+                childColumns = "workoutId", // Внешний ключ в Exercise
+                onDelete = ForeignKey.CASCADE // При удалении тренировки удалить и ее упражнения
+        ))
 public class Exercise {
     //Идентификатор
     @PrimaryKey(autoGenerate = true)

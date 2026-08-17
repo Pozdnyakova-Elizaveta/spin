@@ -5,6 +5,9 @@ import androidx.room.Query;
 import com.example.spin.entities.History;
 import java.util.List;
 
+/**
+ * DAO для историй тренировок
+ */
 @Dao
 public interface HistoryDao {
     @Insert
