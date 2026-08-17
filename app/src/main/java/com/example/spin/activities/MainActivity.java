@@ -6,6 +6,9 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.spin.R;
 
+/**
+ * Главный экран
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override
