@@ -23,6 +23,7 @@
         </activity>
         <activity android:name=".activities.HistoryActivity" />
         <activity android:name=".activities.SelectWorkoutActivity" />
+        <activity android:name=".activities.CreateWorkoutActivity" />
     </application>
 
 </manifest>
