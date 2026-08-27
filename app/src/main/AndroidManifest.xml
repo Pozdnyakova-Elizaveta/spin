@@ -25,6 +25,8 @@
         <activity android:name=".activities.SelectWorkoutActivity" />
         <activity android:name=".activities.CreateWorkoutActivity" />
         <activity android:name=".activities.TrainingCompleteActivity" />
+        <activity android:name=".activities.AddExerciseActivity" />
+        <activity android:name=".activities.TrainingActivity" />
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -11,10 +13,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Сидя"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp" />
 
     <!-- Рисунок -->
@@ -22,21 +26,24 @@
         android:id="@+id/ivPositionImage"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@drawable/ic_sitting"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/tvPositionName"
-        android:layout_marginTop="32dp"
-        android:contentDescription="Position" />
+        android:src="@drawable/sitting"
+        android:contentDescription="Положение тела"
+        app:layout_constraintTop_toBottomOf="@id/tvPositionName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
 
-    <!-- Сложность -->
+    <!-- Сопротивление -->
     <TextView
         android:id="@+id/tvResistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Сопротивление: 5"
         android:textSize="18sp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/ivPositionImage"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/ivPositionImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp" />
 
     <!-- Таймер -->
@@ -45,22 +52,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00:30"
-        android:textSize="48sp"
+        android:textSize="72sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/tvResistance"
+        android:fontFamily="monospace"
+        app:layout_constraintTop_toBottomOf="@id/tvResistance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="48dp" />
+
+    <!-- Индикатор прогресса -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="200dp"
+        android:layout_height="8dp"
+        android:progress="50"
+        android:max="100"
+        android:progressTint="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/tvTimer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="24dp" />
 
-    <!-- Кнопка пропуска -->
+    <!-- Кнопка пропуска (центрированная внизу) -->
     <Button
         android:id="@+id/btnSkip"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="56dp"
         android:text="Пропустить"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="32dp"
-        style="@style/Widget.AppCompat.Button.Borderless" />
+        android:textSize="16sp"
+        android:textColor="#666"
+        android:background="@color/black"
+        android:paddingStart="48dp"
+        android:paddingEnd="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="24dp" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
