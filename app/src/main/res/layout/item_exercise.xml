@@ -44,7 +44,7 @@
         android:id="@+id/btnDelete"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@drawable/ic_delete"
+        android:src="@drawable/delete"
         android:padding="12dp"
         android:contentDescription="Удалить"
         android:background="?android:attr/selectableItemBackground" />

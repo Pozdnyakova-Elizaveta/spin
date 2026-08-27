@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +20,7 @@ import lombok.Setter;
                 childColumns = "workoutId", // Внешний ключ в Exercise
                 onDelete = ForeignKey.CASCADE // При удалении тренировки удалить и ее упражнения
         ))
-public class Exercise {
+public class Exercise implements Serializable {
     //Идентификатор
     @PrimaryKey(autoGenerate = true)
     private int id;
