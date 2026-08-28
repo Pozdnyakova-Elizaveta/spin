@@ -3,6 +3,7 @@ package com.example.spin.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,8 @@ public class TrainingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training); // Установка UI-макета
+        // Включаем постоянную подсветку экрана
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         tvPositionName = findViewById(R.id.tvPositionName);
         tvResistance = findViewById(R.id.tvResistance);
