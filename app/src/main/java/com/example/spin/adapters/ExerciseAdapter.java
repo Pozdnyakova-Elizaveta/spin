@@ -54,7 +54,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
         Exercise exercise = exercises.get(position);
         //устанвока значений
         holder.tvPosition.setText(getPositionName(exercise.getPosition()));
-        holder.tvDuration.setText("Продолжительность: " + exercise.getDuration() + " сек");
+        holder.tvDuration.setText("Продолжительность: " + formatDuration(exercise.getDuration()));
         holder.tvResistance.setText("Сопротивление: " + exercise.getResistance());
         //обработка клика на кнопку удаления
         holder.btnDelete.setOnClickListener(v -> {
@@ -62,6 +62,22 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ViewHo
                 deleteListener.onDelete(position);
             }
         });
+    }
+
+    /**
+     * Приведение вывода времени к мин и сек
+     */
+    private String formatDuration(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+
+        if (minutes == 0) {
+            return remainingSeconds + " сек";
+        } else if (remainingSeconds == 0) {
+            return minutes + " мин";
+        } else {
+            return minutes + " мин " + remainingSeconds + " сек";
+        }
     }
 
     @Override
