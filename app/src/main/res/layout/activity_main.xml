@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="24dp"
-    android:background="@color/white"
+    android:background="@drawable/bg_gradient_green"
     tools:context=".activities.MainActivity">
 
     <!-- Логотип и название -->
@@ -17,21 +17,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginBottom="60dp">
+        android:layout_marginBottom="32dp">
 
         <ImageView
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:src="@drawable/spin"
-            android:contentDescription="Logo" />
+            android:contentDescription="Logo"
+            android:elevation="8dp"
+            android:background="@drawable/bg_icon_outline" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Spin"
-            android:textSize="28sp"
+            android:textSize="38sp"
             android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp" />
+            android:textColor="@color/white"
+            android:layout_marginTop="12dp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.12"
+            android:shadowColor="#1A000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="6" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Твой фитнес-помощник"
+            android:textSize="14sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginTop="2dp"
+            android:fontFamily="sans-serif"
+            android:letterSpacing="0.08" />
 
     </LinearLayout>
 
@@ -44,38 +63,91 @@
 
         <Button
             android:id="@+id/btnStartWorkout"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
             android:text="Начать тренировку"
-            android:padding="16dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:layout_marginBottom="12dp"
-            style="@style/Widget.AppCompat.Button.Colored" />
+            android:background="@drawable/btn_double_border"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="4dp"
+            android:includeFontPadding="false"
+            android:stateListAnimator="@animator/button_raise"
+            app:backgroundTint="@null"/>
 
         <Button
             android:id="@+id/btnCreateWorkout"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
             android:text="Создать тренировку"
-            android:padding="16dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:layout_marginBottom="12dp"
-            style="@style/Widget.AppCompat.Button.Colored" />
+            android:background="@drawable/btn_double_border"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="2dp"
+            android:includeFontPadding="false"
+            app:backgroundTint="@null"/>
 
         <Button
             android:id="@+id/btnHistory"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
             android:text="История тренировок"
-            android:padding="16dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
             android:layout_marginBottom="12dp"
-            style="@style/Widget.AppCompat.Button.Colored" />
+            android:background="@drawable/btn_double_border"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:elevation="2dp"
+            android:includeFontPadding="false"
+            app:backgroundTint="@null"/>
 
         <Button
             android:id="@+id/btnExit"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
             android:text="Выход"
-            android:padding="16dp"
-            style="@style/Widget.AppCompat.Button.Colored" />
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_double_border"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:includeFontPadding="false"
+            app:backgroundTint="@null"/>
+
     </LinearLayout>
+
+    <!-- Нижний колонтитул -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v1.0.0"
+        android:textSize="12sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="40dp"
+        android:fontFamily="sans-serif"
+        android:letterSpacing="0.1" />
 
 </LinearLayout>
