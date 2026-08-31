@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
     android:padding="24dp"
-    android:background="@color/white">
+    android:background="@drawable/bg_gradient_green">
 
-<!--    <ImageView-->
-<!--        android:layout_width="200dp"-->
-<!--        android:layout_height="200dp"-->
-<!--        android:src="@drawable/ic_trophy"-->
-<!--        android:layout_marginBottom="32dp"-->
-<!--        android:contentDescription="Победа" />-->
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_petard"
+        android:layout_marginBottom="32dp"
+        android:contentDescription="Победа" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +21,7 @@
         android:text="Тренировка завершена!"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:layout_marginBottom="8dp" />
 
     <TextView
@@ -28,7 +29,7 @@
         android:layout_height="wrap_content"
         android:text="Отличная работа!"
         android:textSize="18sp"
-        android:textColor="@color/dark_gray"
+        android:textColor="@color/white"
         android:layout_marginBottom="48dp" />
 
     <Button
@@ -37,6 +38,12 @@
         android:layout_height="wrap_content"
         android:text="В меню"
         android:padding="16dp"
-        style="@style/Widget.AppCompat.Button.Colored" />
+        android:background="@drawable/btn_double_border"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:includeFontPadding="false"
+        app:backgroundTint="@null" />
 
 </LinearLayout>
