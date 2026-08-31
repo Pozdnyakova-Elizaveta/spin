@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,51 +25,59 @@ import java.util.concurrent.Executors;
  * Экран процесса тренировки
  */
 public class TrainingActivity extends AppCompatActivity {
-    private TextView tvPositionName, tvResistance, tvTimer; //отображение данных упражнения
-    private ImageView ivPositionImage;  //изображение для положения
+    private TextView tvPositionName, tvResistance, tvTimer;
+    private ImageView ivPositionImage;
+    private ImageButton btnPause;
 
-    private int workoutId;  //id выполняемой тренировки
-    private List<Exercise> exercises;   //список упражнений
-    private int currentExerciseIndex = 0;   //индекс текущего упражнения
-    private CountDownTimer timer;   //таймер
+    private int workoutId;
+    private List<Exercise> exercises;
+    private int currentExerciseIndex = 0;
+    private CountDownTimer timer;
+    private boolean isPaused = false;
+    private boolean isRunning = false;
+    private long remainingTimeInMillis = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_training); // Установка UI-макета
-        // Включаем постоянную подсветку экрана
+        setContentView(R.layout.activity_training);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         tvPositionName = findViewById(R.id.tvPositionName);
         tvResistance = findViewById(R.id.tvResistance);
         tvTimer = findViewById(R.id.tvTimer);
         ivPositionImage = findViewById(R.id.ivPositionImage);
-        //кнопка пропуска упражнения
         Button btnSkip = findViewById(R.id.btnSkip);
-        //получение ID тренировки из Intent
+        btnPause = findViewById(R.id.btnPause);
+
         workoutId = getIntent().getIntExtra("workoutId", -1);
         if (workoutId == -1) {
             finish();
             return;
         }
-        //загрузка упражнений
+
         loadExercises();
-        //пропуск упражнения
+
         btnSkip.setOnClickListener(v -> {
             if (timer != null) {
                 timer.cancel();
+                timer = null; // Важно: обнуляем ссылку
             }
+            isRunning = false;
+            isPaused = false;
+            btnPause.setImageResource(R.drawable.ic_pause);
+            btnPause.setEnabled(true);
+            btnPause.setBackgroundResource(R.drawable.btn_circle_white);
             nextExercise();
         });
+
+        btnPause.setOnClickListener(v -> togglePause());
     }
 
-    /**
-     * Загрузка упражнений из БД
-     */
     private void loadExercises() {
         Executors.newSingleThreadExecutor().execute(() -> {
             exercises = AppDatabase.getInstance(this).exerciseDao().getExercisesForWorkout(workoutId);
-            runOnUiThread(() -> {   //обновление UI
+            runOnUiThread(() -> {
                 if (exercises.isEmpty()) {
                     Toast.makeText(this, "Нет упражнений в тренировке", Toast.LENGTH_SHORT).show();
                     finish();
@@ -80,52 +89,139 @@ public class TrainingActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Отображение упражнения
-     * @param index индекс упражнения
-     */
     private void showExercise(int index) {
-        //проверка, выполнены ли все упражнения
         if (index >= exercises.size()) {
             finishTraining();
             return;
         }
-        //вывод данных упражнения
+
         Exercise exercise = exercises.get(index);
         tvPositionName.setText(getPositionName(exercise.getPosition()));
         tvResistance.setText("Сопротивление: " + exercise.getResistance());
         setPositionImage(exercise.getPosition());
-        //остановка старого таймера
+
+        // Сброс состояния паузы
+        isPaused = false;
+        isRunning = false;
+        btnPause.setImageResource(R.drawable.ic_pause);
+        btnPause.setEnabled(true);
+        btnPause.setBackgroundResource(R.drawable.btn_circle_white);
+
+        // Остановка старого таймера
         if (timer != null) {
             timer.cancel();
+            timer = null; // Обнуляем ссылку
         }
-        //запуск нового таймера
-        long remainingTime = exercise.getDuration();
-        startTimer(remainingTime);
+
+        // Запуск нового таймера
+        long durationInSeconds = exercise.getDuration();
+        long durationInMillis = durationInSeconds * 1000;
+        remainingTimeInMillis = durationInMillis;
+        startTimer(durationInMillis);
     }
 
     /**
      * Запуск таймера
-     * @param duration продолжительность упражнения
+     * @param durationMillis продолжительность упражнения в МИЛЛИСЕКУНДАХ
      */
-    private void startTimer(long duration) {
-        timer = new CountDownTimer(duration * 1000, 1000) {
+    private void startTimer(long durationMillis) {
+        // Отменяем старый таймер, если он существует
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+
+        isRunning = true;
+        isPaused = false;
+        btnPause.setImageResource(R.drawable.ic_pause);
+        btnPause.setBackgroundResource(R.drawable.btn_circle_white);
+
+        timer = new CountDownTimer(durationMillis, 1000) {
             @Override
-            public void onTick(long millisUntilFinished) {  //обновление значения таймера каждую секунду
+            public void onTick(long millisUntilFinished) {
+                remainingTimeInMillis = millisUntilFinished;
                 long seconds = millisUntilFinished / 1000;
                 tvTimer.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
             }
 
             @Override
             public void onFinish() {
-                nextExercise(); //переход к следующему упражнению
+                isRunning = false;
+                isPaused = false;
+                btnPause.setImageResource(R.drawable.ic_pause);
+                btnPause.setEnabled(false);
+                btnPause.setBackgroundResource(R.drawable.btn_circle_white);
+                tvTimer.setText("00:00");
+                timer = null; // Обнуляем ссылку
+                nextExercise();
             }
         }.start();
     }
 
-    /**
-     * Переход к следующему упражнению
-     */
+    private void togglePause() {
+        if (!isRunning) {
+            // Если таймер не запущен, пробуем запустить
+            if (remainingTimeInMillis > 0) {
+                startTimer(remainingTimeInMillis);
+            }
+            return;
+        }
+
+        if (isPaused) {
+            resumeTimer();
+        } else {
+            pauseTimer();
+        }
+    }
+
+    private void pauseTimer() {
+        if (timer != null && isRunning) {
+            timer.cancel();
+            timer = null; // Обнуляем ссылку
+            isPaused = true;
+            isRunning = false;
+            btnPause.setImageResource(R.drawable.ic_play);
+            btnPause.setBackgroundResource(R.drawable.btn_circle_green);
+        }
+    }
+
+    private void resumeTimer() {
+        if (remainingTimeInMillis > 0) {
+            // Отменяем старый таймер, если он еще существует
+            if (timer != null) {
+                timer.cancel();
+                timer = null;
+            }
+
+            isPaused = false;
+            isRunning = true;
+            btnPause.setImageResource(R.drawable.ic_pause);
+            btnPause.setBackgroundResource(R.drawable.btn_circle_white);
+
+            // Создаем новый таймер с оставшимся временем
+            timer = new CountDownTimer(remainingTimeInMillis, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    remainingTimeInMillis = millisUntilFinished;
+                    long seconds = millisUntilFinished / 1000;
+                    tvTimer.setText(String.format("%02d:%02d", seconds / 60, seconds % 60));
+                }
+
+                @Override
+                public void onFinish() {
+                    isRunning = false;
+                    isPaused = false;
+                    btnPause.setImageResource(R.drawable.ic_pause);
+                    btnPause.setEnabled(false);
+                    btnPause.setBackgroundResource(R.drawable.btn_circle_white);
+                    tvTimer.setText("00:00");
+                    timer = null;
+                    nextExercise();
+                }
+            }.start();
+        }
+    }
+
     private void nextExercise() {
         currentExerciseIndex++;
         if (currentExerciseIndex < exercises.size()) {
@@ -135,11 +231,7 @@ public class TrainingActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Завершение тренировки
-     */
     private void finishTraining() {
-        // Сохраняем в историю
         Executors.newSingleThreadExecutor().execute(() -> {
             Workout workout = AppDatabase.getInstance(this).workoutDao().getWorkoutById(workoutId);
             if (workout != null) {
@@ -147,7 +239,7 @@ public class TrainingActivity extends AppCompatActivity {
                         System.currentTimeMillis(), exercises.size(), exercises.size(), 0L);
                 AppDatabase.getInstance(this).historyDao().insert(history);
             }
-            runOnUiThread(() -> {   //переход к экрану завершения тренировки
+            runOnUiThread(() -> {
                 Intent intent = new Intent(TrainingActivity.this, TrainingCompleteActivity.class);
                 startActivity(intent);
                 finish();
@@ -155,9 +247,6 @@ public class TrainingActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * Локализация названий позиций
-     */
     private String getPositionName(String position) {
         switch (position) {
             case "sitting": return "Сидя";
@@ -169,11 +258,8 @@ public class TrainingActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Получение соответствующего изображения для позиции
-     */
     private void setPositionImage(String position) {
-        int drawableId = R.drawable.sitting; // default
+        int drawableId = R.drawable.sitting;
         switch (position) {
             case "sitting": drawableId = R.drawable.sitting; break;
             case "sitting_tilt": drawableId = R.drawable.sitting_tilt; break;
@@ -189,6 +275,29 @@ public class TrainingActivity extends AppCompatActivity {
         super.onDestroy();
         if (timer != null) {
             timer.cancel();
+            timer = null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Если приложение уходит в фон, автоматически ставим на паузу
+        if (isRunning && !isPaused) {
+            pauseTimer();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Обновляем состояние кнопки при возврате
+        if (isPaused) {
+            btnPause.setImageResource(R.drawable.ic_play);
+            btnPause.setBackgroundResource(R.drawable.btn_circle_green);
+        } else if (isRunning) {
+            btnPause.setImageResource(R.drawable.ic_pause);
+            btnPause.setBackgroundResource(R.drawable.btn_circle_white);
         }
     }
 }
